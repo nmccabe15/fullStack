@@ -140,21 +140,7 @@ def search_episode(season, number):
             return make_response( jsonify( {"error" : "Invalid"} ), 404 )
     return make_response( jsonify(data_to_return), 200 ) 
 
-@app.route("/api/v1.0/episodes/search/<int:number>", methods=["GET"])
-def search_episodes(number):
-    data_to_return = []
-    for episode in episodes.find({'number': number}):
-        if episode is not None:
-            episode['_id'] = str(episode['_id'])
-            for review in episode['reviews']:
-                review['_id'] = str(review['_id'])
-            data_to_return.append(episode)
-        else:
-            return make_response( jsonify( {"error" : "Invalid"} ), 404 )
-    return make_response( jsonify(data_to_return), 200 ) 
-
 # reviews
-
 @app.route("/api/v1.0/episodes/<string:bid>/reviews", methods=["POST"])
 #@jwt_required
 def add_new_review(bid):
@@ -177,6 +163,14 @@ def fetch_all_reviews(id):
         data_to_return.append(review)
     return make_response( jsonify(data_to_return ), 200 )
 
+@app.route("/api/v1.0/episodes/<string:id>/reviews/<string:rid>", methods=["GET"])
+def fetch_one_review(id, rid):
+    episode = episodes.find_one( { "reviews._id" : ObjectId(rid) }, { "_id" : 0, "reviews.$": 1} )
+    if episode is None:
+        return make_response( jsonify( {"error" : "Invalid episode ID or review ID"} ), 404 )
+    episode['reviews'][0]['_id'] = str(episode['reviews'][0]['_id'])
+    return make_response( jsonify(episode['reviews'][0] ), 200 )
+
 @app.route("/api/v1.0/episodes/<bid>/reviews/<rid>", methods=["PUT"])
 def edit_review(bid, rid):
     edited_review = {
@@ -196,8 +190,24 @@ def delete_review(bid, rid):
                     { "_id" : ObjectId(rid) } } } )
     return make_response( jsonify( {} ), 204)
 
-#users
 
+@app.route("/api/v1.0/episodes/reviews/<string:username>", methods=["GET"])
+def show_reviews_by_username(username):
+    data_to_return = []
+    for episode in episodes.find({'reviews.username:': username}):
+        if episode is not None:
+            episode['_id'] = str(episode['_id'])
+            for review in episode['reviews']:
+                review['_id'] = str(review['_id'])
+                data_to_return.append(review)
+            else:
+                return make_response( jsonify( {"error" : "Invalid username"} ), 404 )
+            data_to_return.append(episode)
+        else:
+            return make_response( jsonify( {"error" : "Invalid season number"} ), 404 )
+    return make_response( jsonify(data_to_return), 200 ) 
+
+#users
 @app.route("/api/v1.0/users", methods=["GET"])
 def show_all_users():
     data_to_return = []

@@ -17,12 +17,16 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <div class="card bg-light mb3" *ngFor='let review of webService.reviews_list | async'>
-                <div class="card-header">
-                    Review by {{review.username}}
-                </div>
-                <div class="card-body">
-                    Comment: {{review.comment}} <br> Rating: {{review.rating}}
+            <div *ngFor='let episode of webService.episode | async'>
+                <div class="card bg-light mb3" *ngFor='let review of webService.reviews_list | async'>
+                    <div class="container" [routerLink]="['/episodes', episode._id, 'review', review._id] " style="cursor: pointer">
+                        <div class="card-header">
+                            Review by {{review.username}}
+                        </div>
+                        <div class="card-body">
+                            Comment: {{review.comment}} <br> Rating: {{review.rating}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,8 +35,8 @@
 
 <div *ngIf="!authService.loggedIn" class="container">
     <div class="row">
-        <div class="text-danger">
-            <p class="font-weight-bold">To review this episode you must login!</p>
+        <div class="text-warning">
+            <p style="margin:20px" class="font-weight-bold">To review this episode you must login!</p>
         </div>
     </div>
 </div>
@@ -40,7 +44,7 @@
 
 <div class="container" *ngIf="authService.loggedIn">
     <div class="class">
-        <div class="col-sm-12">
+        <div style="margin:20px" class="col-sm-12">
             <h3>
                 Leave a review!
             </h3>

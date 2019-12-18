@@ -1,0 +1,30 @@
+<div style="margin:100px" *ngIf="authService.userProfile$ | async as profile">
+    <form [formGroup]='reviewForm' (ngSubmit)='onSubmit()'>
+        <div class="form-group">
+            <label for="name">Username</label>
+            <select type="text" id="name" name="name" class="form-control" formControlName="name">
+                            <option value="{{ profile.nickname }}"> {{ profile.nickname }} </option>
+                            <option value="Anonymous"> Anonymous </option>
+                        </select>
+        </div>
+        <div class="form-group">
+            <label for="review">Leave Review Comment below</label>
+            <textarea id="review" name="review" rows="2" class="form-control" formControlName="review" [ngClass]="{'error' : isInvalid('review') }"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="rating">Please provide a rating from 1-5 (1=bad, 5=excellent)</label>
+            <select type="text" id="rating" name="rating" class="form-control" formControlName="rating">
+                            <option value="1"> 1 </option>
+                            <option value="2"> 2 </option>
+                            <option value="3"> 3 </option>
+                            <option value="4"> 4 </option>
+                            <option value="5"> 5 </option>
+                    </select>
+        </div>
+        <span *ngIf="isIncomplete()">
+                    You must complete all fields
+                </span>
+        <button *ngIf="!isIncomplete()" type="submit" class="btn btn-outline-secondary"> Submit </button>
+    </form>
+    <button style="margin-top:20px" type="button" class="btn btn-secondary" [routerLink]="[ '/episodes', id]"> Back to episode</button>
+</div>

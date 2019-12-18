@@ -3,7 +3,6 @@ import { WebService } from './web.service';
 import { ActivatedRoute } from '@angular/router'; 
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from './auth.service'; 
-import { Profile } from 'selenium-webdriver/firefox';
 
 @Component({
     selector: 'episode',
@@ -51,5 +50,4 @@ export class EpisodeComponent {
         return this.isInvalid('review') ||
                this.isUntouched();
     }
-
  }

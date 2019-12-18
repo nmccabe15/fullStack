@@ -13,6 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './auth.service'; 
 import { NavComponent } from './nav.component';
 import { ProfileComponent } from './profile/profile.component';  
+import { ReviewComponent } from './review.component';  
+import { EditReviewComponent } from './editReview.component';  
 import { AuthGuard } from './auth.guard';
 
 var routes = [
@@ -36,12 +38,20 @@ var routes = [
   {
     path: 'season',
     component: SeasonComponent
+  },
+  {
+    path: 'episodes/:id/review/:rid',
+    component: ReviewComponent
+  },
+  {
+    path: 'episodes/:id/review/:rid/edit',
+    component: EditReviewComponent
   }
 ];
 
 @NgModule({
   declarations: [
-    AppComponent, EpisodesComponent, HomeComponent, EpisodeComponent, NavComponent, ProfileComponent, SeasonComponent
+    AppComponent, EpisodesComponent, HomeComponent, EpisodeComponent, NavComponent, ProfileComponent, SeasonComponent, ReviewComponent, EditReviewComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

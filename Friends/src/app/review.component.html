@@ -1,0 +1,19 @@
+<div style="margin-top: 100px" class="container">
+    <h3 class="text-warning">Review Information</h3>
+    <div class="card bg-light mb3" *ngFor='let review of webService.review_list | async'>
+        <div class="card-header">
+            Review by {{review.username}}
+        </div>
+        <div class="card-body">
+            Comment: {{review.comment}} <br> Rating: {{review.rating}}
+        </div>
+        <div class="card-footer" *ngIf="authService.loggedIn">
+            <div class="btn-group special" role="group">
+                <button style="margin-right: 5px;" type="button" class="btn btn-outline-warning btn-sm" [routerLink]="[ '/episodes', id,'review', review._id, 'edit']"> Edit Review </button>
+                <button style="margin-right: 5px;" type="button" class="btn btn-outline-warning btn-sm" (click)=deleteReview() [routerLink]="[ '/episodes', id]"> Delete Review </button>
+                <button type="button" class="btn btn-outline-warning btn-sm" [routerLink]="[ '/episodes', id]"> Back </button>
+            </div>
+        </div>
+    </div>
+    <button style="margin-top:20px" type="button" class="btn btn-secondary" [routerLink]="[ '/episodes', id]"> Back to episode</button>
+</div>

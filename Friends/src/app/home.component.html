@@ -14,7 +14,7 @@
                     <input type="text" id="number" name="number" class="form-control" formControlName="number" [ngClass]="{'error' : isInvalid('number') }">
                 </div>
                 <span *ngIf="isIncomplete()">
-                        You must complete all fields
+                        You must complete the search
                     </span>
                 <button *ngIf="!isIncomplete()" type="submit" class="btn btn-secondary"> Search </button>
             </form>
