@@ -1,0 +1,31 @@
+<div class="container" style="margin-top: 100px">
+    <div class="row">
+        <img src="http://static.tvmaze.com/uploads/images/medium_portrait/41/104550.jpg">
+        <p>This web app is dedicated to the tv show Friends. Within this web application you will be able to navigate through each episode and review them.</p>
+        <div class="row">
+            <h5 style="padding-right: 20px;">Quick Search</h5>
+            <form [formGroup]='reviewForm' (ngSubmit)='onSubmit()'>
+                <div class="form-group">
+                    <label for="name">Season</label>
+                    <input type="text" id="season" name="season" class="form-control" formControlName="season" [ngClass]="{'error' : isInvalid('season') }">
+                </div>
+                <div class="form-group">
+                    <label for="rating">Episode Number</label>
+                    <input type="text" id="number" name="number" class="form-control" formControlName="number" [ngClass]="{'error' : isInvalid('number') }">
+                </div>
+                <span *ngIf="isIncomplete()">
+                        You must complete all fields
+                    </span>
+                <button *ngIf="!isIncomplete()" type="submit" class="btn btn-secondary"> Search </button>
+            </form>
+            <div style="margin-top:5%" *ngFor="let episode of webService.search_ep_list | async ">
+                <div class="container text-warning text-center" [routerLink]="[ '/episodes', episode._id] " style="cursor: pointer ">
+                    <img src={{episode.image}}> <br> {{episode.season}} x {{episode.number}}
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>

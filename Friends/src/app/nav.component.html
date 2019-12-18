@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg bg-warning navbar-light fixed-top" id="mainNav">
+    <a class="navbar-brand js-scroll-trigger" id="userDisplay"></a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+    <ul class="navbar-nav">
+        <a class="navbar-brand js-scroll-trigger" id="userDisplay"></a>
+        <li class="nav-item">
+            <a class="nav-link" routerLink='/'>Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink='/episodes'>All Episodes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/season">Seasons</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/profile" *ngIf="authService.loggedIn">Profile</a>
+        </li>
+    </ul>
+    <div class="form-inline ml-auto">
+        <div style="padding-right:10px " *ngIf="authService.userProfile$ | async as profile ">
+            <h6>Welcome, {{ profile.nickname }}</h6>
+        </div>
+        <button class="btn btn-outline-secondary " (click)="authService.login() " *ngIf="!authService.loggedIn ">
+                            Log In</button>
+        <button class="btn btn-outline-secondary " (click)="authService.logout() " *ngIf="authService.loggedIn ">
+                            Log Out</button>
+    </div>
+</nav>

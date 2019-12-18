@@ -1,0 +1,78 @@
+<div class="container" style="margin-top: 100px">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="text-secondary">Episode Information</h3>
+            <div *ngFor='let episode of webService.episode | async'>
+                <div class="card text-white bg-secondary mb-3">
+                    <div class="card-body">
+                        <h6>{{episode.name}}</h6>
+                        <img src={{episode.image}}> <br> Season: {{episode.season}} <br> Episode Number: {{episode.number}} <br> Airdate: {{episode.airdate}} <br> Summary: {{episode.summary}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card bg-light mb3" *ngFor='let review of webService.reviews_list | async'>
+                <div class="card-header">
+                    Review by {{review.username}}
+                </div>
+                <div class="card-body">
+                    Comment: {{review.comment}} <br> Rating: {{review.rating}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!authService.loggedIn" class="container">
+    <div class="row">
+        <div class="text-danger">
+            <p class="font-weight-bold">To review this episode you must login!</p>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" *ngIf="authService.loggedIn">
+    <div class="class">
+        <div class="col-sm-12">
+            <h3>
+                Leave a review!
+            </h3>
+            <div *ngIf="authService.userProfile$ | async as profile">
+                <form [formGroup]='reviewForm' (ngSubmit)='onSubmit()'>
+                    <div class="form-group">
+                        <label for="name">Username</label>
+                        <select type="text" id="name" name="name" class="form-control" formControlName="name">
+                            <option value="{{ profile.nickname }}"> {{ profile.nickname }} </option>
+                            <option value="Anonymous"> Anonymous </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="review">Leave Review Comment below</label>
+                        <textarea id="review" name="review" rows="2" class="form-control" formControlName="review" [ngClass]="{'error' : isInvalid('review') }"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">Please provide a rating from 1-5 (1=bad, 5=excellent)</label>
+                        <select type="text" id="rating" name="rating" class="form-control" formControlName="rating">
+                            <option value="1"> 1 </option>
+                            <option value="2"> 2 </option>
+                            <option value="3"> 3 </option>
+                            <option value="4"> 4 </option>
+                            <option value="5"> 5 </option>
+                    </select>
+                    </div>
+                    <span *ngIf="isIncomplete()">
+                    You must complete all fields
+                </span>
+                    <button *ngIf="!isIncomplete()" type="submit" class="btn btn-primary"> Submit </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
